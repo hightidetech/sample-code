@@ -41,6 +41,18 @@ AGE_IN_HOURS
   AGE_IN_HOURS=`echo $ENTRY | awk 'BEGIN {FS="\t"}; {print $9}'`;
   
 #Set thresholds
+
+if [[ $SUPPORT_LEVEL =~ Premium* ]]
+then
+  SEV1TH=0;
+  SEV2TH=3;
+  SEV3TH=72;
+else
+  SEV1TH=3;
+  SEV2TH=24;
+  SEV3TH=72;
+fi
+
 #Flag notifications
 #Do Notifications
 #Log notifications
