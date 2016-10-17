@@ -31,6 +31,15 @@ ORDER BY SEVERITY ASC \
 ###########
 
 #Pull relevant vars out of table data
+
+for ENTRY in `cat ./unresolved.txt`; do
+  #SR_ID SEVERITY ACCOUNT SUPPORT_LEVEL SUPPORT_TIER OWNER STATUS CREATED
+AGE_IN_HOURS
+  SR_ID=`echo $ENTRY | awk 'BEGIN {FS="\t"}; {print $1}'`;
+  declare -i SEVERITY=`echo $ENTRY | awk 'BEGIN {FS="\t"}; {print $2}'`;
+  SUPPORT_LEVEL=`echo $ENTRY | awk 'BEGIN {FS="\t"}; {print $4}'`;
+  AGE_IN_HOURS=`echo $ENTRY | awk 'BEGIN {FS="\t"}; {print $9}'`;
+  
 #Set thresholds
 #Flag notifications
 #Do Notifications
