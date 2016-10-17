@@ -54,6 +54,19 @@ else
 fi
 
 #Flag notifications
+
+
+if (( $SEVERITY == 1 )) && (( $AGE_IN_HOURS > $SEV1TH )) 
+  || (( $SEVERITY == 2 )) && (( $AGE_IN_HOURS > $SEV2TH )) 
+  || (( $SEVERITY == 2 )) && (( $AGE_IN_HOURS > $SEV3TH ))
+
+then
+  grep $SR_ID ./notified.txt > /dev/null 2>&1;
+  if [ $? -ne 0 ]; then
+    echo $SR_ID >> ./notify.txt;
+   fi
+fi
+
 #Do Notifications
 #Log notifications
 #Cleanup
