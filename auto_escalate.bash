@@ -102,4 +102,14 @@ Case Owner:        ##F9## \
 ";
 
 #Log notifications
+
+###########
+
+   ##  ADD LOGGING HERE
+    echo "Sending notification for CaseID $CASE..." >> escal_log.txt;
+   ##
+  done;
+  sleep 1;
+done
+
 #Cleanup
