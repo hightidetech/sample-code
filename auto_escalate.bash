@@ -113,3 +113,9 @@ Case Owner:        ##F9## \
 done
 
 #Cleanup
+
+cat ./notify.txt >> ./notified.txt;
+cat /dev/null > ./notify.txt;
+cat /dev/null > ./escalations.txt
+
+done
