@@ -55,7 +55,6 @@ fi
 
 #Flag notifications
 
-
 if (( $SEVERITY == 1 )) && (( $AGE_IN_HOURS > $SEV1TH )) 
   || (( $SEVERITY == 2 )) && (( $AGE_IN_HOURS > $SEV2TH )) 
   || (( $SEVERITY == 2 )) && (( $AGE_IN_HOURS > $SEV3TH ))
@@ -68,5 +67,39 @@ then
 fi
 
 #Do Notifications
+
+for CASE in `cat ./notify.txt`; do
+
+  #######
+  ## ADD CASE QUERY HERE FOR RELEVANT DETAILS
+  ## sql = SELECT 'escalations@domain.com' AS TO_RECIPIENT, ACCOUNT, PRODUCT_SERVICE AS PRODUCT, \
+  ## CREATED AS 'Opened Date', AGE_IN_HOURS AS AGE, SEVERITY,  ...etc...etc
+
+  ## NOTIFY_TBL = sql.execute > ./escalations.txt
+  cp ./notify.txt ./escalations.txt;
+  #######
+
+for ESCAL in `cat ./escalations.txt`; do
+    ###########
+    ## SEND EMAIL USING CSV TEMPLATE
+    ##
+    msg="  \
+Instructions: \
+Wiki page (will link this soon) \
+\
+Go to Case:        ##F1## \
+\
+Account:           ##F2## \
+Product:           ##F3## \
+Opened Date:       ##F4## \
+Age:               ##F5## (in hours) \
+Severity:          ##F6## \
+Subject:           [AKAM-CASE ##F1##] ##F7## ##F8## Requires Escalation \
+Case Owner:        ##F9## \
+\
+\
+
+";
+
 #Log notifications
 #Cleanup
