@@ -1,0 +1,121 @@
+---
+swagger: "2.0"
+info:
+  version: "2017-07-04T19:16:27Z"
+  title: "totango-proxy"
+host: "FOO.execute-api.us-east-1.amazonaws.com"
+basePath: "/dev"
+schemes:
+- "https"
+paths:
+  /{proxy+}:
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+    x-amazon-apigateway-any-method:
+      produces:
+      - "application/json"
+      parameters:
+      - name: "assignee"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "Accept"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "priority"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "description"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "due_date"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "Content-Type"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "activity_type_id"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "proxy"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "status"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "account_id"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "user_timezone"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "X-Requested-With"
+        in: "header"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.header.app-token: "'aBigLongStringno-reply@greenhouse.io'"
+          integration.request.header.Accept-Encoding: "'identity,gzip;q=0,deflate;q=0'"
+          integration.request.header.X-Requested-With: "method.request.header.X-Requested-With"
+          integration.request.header.accept-encoding: "'identity,gzip;q=0,deflate;q=0'"
+          integration.request.header.Accept: "'application/json'"
+          integration.request.path.proxy: "method.request.path.proxy"
+          integration.request.header.Content-Type: "method.request.header.Content-Type"
+        uri: "https://app.totango.com/api/v3/{proxy}"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "ANY"
+        cacheNamespace: "i7zsyg"
+        cacheKeyParameters:
+        - "method.request.path.proxy"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "http_proxy"
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"
