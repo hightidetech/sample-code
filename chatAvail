@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#set -x
+
+export TZ="America/New_York";
+unavailMin=0;
+unavailMinTot=0;
+weeklyAvail=0;
+dailyAvail=0;
+weeklyLogged=0;
+result=0;
+
+while (true); do
+
+  time=$(date +%k%M);
+  day=$(date +"%u");
+  now=$(date +"%m/%d/%Y %R");
+
+  # Validate office hours in ET 9-9, M-F
+  if [[ "$time" -ge 900 ]] && [[ "$time" -le 2100 ]] && [[ "$day" -ge 1 ]] && [[ "$day" -le 5 ]];then
+    # Check agent availabiilty
+    result=`curl -H "Authorization: Bearer YOURTOKENTEXT" -s https://rtm.zopim.com/stream/agents/agents_online | python -c 'import sys, json; data=json.load(sys.stdin)["content"]["data"]; print str(data["agents_online"]);'` > /dev/null 2>&1; 
+    if [[ $result -ge 1 ]]; then
+      result=1;
+    else 
+      result=0;
+      ((unavailMin+=1));
+    fi 
+    # Log timestamp and result 
+    echo $now,$result,$unavailMin >> ./avail.log;
+    # Check if EOD
+    if [[ "$time" -eq 2100 ]]; then
+      dailyAvail=`awk -v s1="$unavailMin" -v s2=720 'BEGIN{printf "%.1f", 100 - (s1/s2 * 100)}'`;
+      echo "$now: Daily chat Channel Availability is: $dailyAvail %..." >> ./daily.log;
+      ((unavailMinTot+=unavailMin));
+      unavailMin=0;
+    fi
+ 
+  else
+    # NOP
+    echo "$now,NA,$unavailMin" >> ./avail.log;
+  fi
+
+
+  # reset counter on Sun and calculate avaerage availability
+  if [[ "$day" -eq 7 ]] && [[ "$weeklyLogged" -eq 0 ]]; then
+    weeklyAvail=`awk -v s1="$unavailMinTot" -v s2=3600 'BEGIN{printf "%.1f", 100 - (s1/s2 * 100)}'`;
+    echo "$now: Weekly Chat Channel Availability is: $weeklyAvail..." >> ./weekly.log;
+    unavailMinTot=0;
+    weeklyLogged=1;
+  fi
+  if [[ "$day" -eq 1 ]]; then
+    weeklyLogged=0;
+  fi
+  sleep 60;
+done
