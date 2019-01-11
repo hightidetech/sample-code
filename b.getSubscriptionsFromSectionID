@@ -1,0 +1,5 @@
+var jsonData = JSON.parse(responseBody);
+var subscribedUserIDs = jsonData.subscriptions.map(function(item) {
+  return item.user_id;
+});
+

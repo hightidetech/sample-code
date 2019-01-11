@@ -1,0 +1,8 @@
+var jsonData = JSON.parse(responseBody);
+var sectionName = "";
+for (x in jsonData.sections) {
+  sectionName = jsonData.sections[x].name;
+  if (sectionName == "Release Notes"){
+      postman.setEnvironmentVariable("rel_note_section_id",jsonData.sections[x].id);
+  }
+}

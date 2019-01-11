@@ -1,0 +1,10 @@
+var jsonData = JSON.parse(responseBody);
+var subscribedUsers = jsonData.users.map(function(item) {
+  return item.name+":"+item.email;
+});
+ 
+postman.setEnvironmentVariable("subscribed_users",subscribedUsers);
+ 
+postman.setEnvironmentVariable("num_subscribed_users",subscribedUsers.length);
+ 
+console.info("Number of Subscriptions: "+subscribedUsers.length);
